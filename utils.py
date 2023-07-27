@@ -1,5 +1,5 @@
 """
-Util functions
+utility functions for loading models from hf hub
 """
 import os
 import torch
@@ -20,19 +20,26 @@ def load_model(model_name):
     assert data_frac in ["1.0", "0.1", "0.01", "0.001", "0.0001"], "Unrecognized data fraction!"
     assert seed in ["1", "2", "3"], "Unrecognized model seed!"
 
-
     # download checkpoint from hf
-    checkpoint = hf_hub_download(repo_id="eminorhan/"+model_name, filename=model_name+".pth")
+    checkpoint = hf_hub_download(repo_id="eminorhan/humanlike-vits", subfolder=model_spec, filename=model_name+".pth")
 
-    model = build_mae(arch, patch_size)
+    model_name_conversion_dict = {
+        "vits14": "vit_small_patch14", 
+        "vitb14": "vit_base_patch14",
+        "vitl14": "vit_large_patch14",
+        "vith14": "vit_huge_patch14",
+        "vith14@448": "vit_huge_patch14_448",
+        "vith14@476": "vit_huge_patch14_476",
+    }
+
+    model = build_mae(model_name_conversion_dict[model_spec])
     load_mae(model, checkpoint)
 
     return model
 
-def build_mae(arch, patch_size):
-    import vision_transformer_mae as vits
-    full_model_name = arch + "_patch" + str(patch_size)
-    model = vits.__dict__[full_model_name](num_classes=0, global_pool=False)
+def build_mae(model_name):
+    import vit_models as vits
+    model = vits.__dict__[model_name](num_classes=0, global_pool=False)
 
     return model
 
