@@ -10,7 +10,7 @@ def get_available_models():
 
     return available_models
 
-def load_model(model_name):
+def load_model(model_name, finetuned=False):
 
     # parse identifier
     model_spec, data_frac, seed = model_name.split("_")
@@ -21,7 +21,10 @@ def load_model(model_name):
     assert seed in ["1", "2", "3"], "Unrecognized model seed!"
 
     # download checkpoint from hf
-    checkpoint = hf_hub_download(repo_id="eminorhan/humanlike-vits", subfolder=model_spec, filename=model_name+".pth")
+    if finetuned:
+        checkpoint = hf_hub_download(repo_id="eminorhan/humanlike-vits", subfolder="finetuned_" + model_spec, filename=model_name + ".pth")
+    else:
+        checkpoint = hf_hub_download(repo_id="eminorhan/humanlike-vits", subfolder=model_spec, filename=model_name + ".pth")
 
     model_name_conversion_dict = {
         "vits14": "vit_small_patch14", 
@@ -32,14 +35,18 @@ def load_model(model_name):
         "vith14@476": "vit_huge_patch14_476",
     }
 
-    model = build_mae(model_name_conversion_dict[model_spec])
+    model = build_mae(model_name_conversion_dict[model_spec], finetuned=finetuned)
     load_mae(model, checkpoint)
 
     return model
 
-def build_mae(model_name):
+def build_mae(model_name, finetuned=False):
     import vit_models as vits
-    model = vits.__dict__[model_name](num_classes=0, global_pool=False)
+    if finetuned:
+        model = vits.__dict__[model_name](num_classes=1000, global_pool=False)
+        model.head = torch.nn.Sequential(torch.nn.BatchNorm1d(model.head.in_features, affine=False, eps=1e-6), model.head)
+    else:
+        model = vits.__dict__[model_name](num_classes=0, global_pool=False)
 
     return model
 
