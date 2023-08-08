@@ -54,9 +54,9 @@ In the finetuned models, we use a classifier head that consists of a batch norma
 I also wrote some minimal test code in [`test_model.py`](https://github.com/eminorhan/humanlike-vits/blob/master/test_model.py) to check the accuracy of the finetuned models on the ImageNet validation set. You can use it as follows:
 ```python
 python -u test_model.py \
-    --model_id 'vith14@476_1.0_1' \
-    --input_size 476 \
-    --val_data_path IMAGENET_VAL_DATA_PATH
+        --model_id 'vith14@476_1.0_1' \
+        --input_size 476 \
+        --val_data_path IMAGENET_VAL_DATA_PATH
 ```
 You should get a **top-1 accuracy above 44%** and a **top-5 accuracy above 71%** for the two largest and most performant models, *i.e.* `'vith14@448_1.0_1'` and `'vith14@476_1.0_1'`.
 
