@@ -2,7 +2,7 @@
 
 This repository contains the models described in the following paper:
 
-Orhan AE (2023) [Scaling may be all you need for achieving human-level object recognition capacity with human-like visual experience.](https://arxiv.org/abs/2308.xxxxx) arXiv:2308.xxxxx.
+Orhan AE (2023) [Scaling may be all you need for achieving human-level object recognition capacity with human-like visual experience.](https://arxiv.org/abs/2308.03712) arXiv:2308.03712.
 
 ## Loading the models
 The models are all hosted on [huggingface](https://huggingface.co/eminorhan/humanlike-vits). You will need the [`huggingface_hub`](https://huggingface.co/docs/huggingface_hub/quick-start) library to download the models from huggingface (I have `huggingface-hub==0.14.1`). Model names are specified in the format `x_y_z`, where `x` is the model architecture, `y` is the fraction of the combined human-like video dataset used for self-supervised pretraining, and `z` is the seed:
@@ -46,7 +46,7 @@ model = load_model('vith14@476_1.0_1', finetuned=True)
 ```
 This will load the corresponding model that is finetuned with 2% of ImageNet training data (this is called the *permissive* finetuning condition in the paper). Unfortunately, I have not saved the models finetuned on ~1% of ImageNet (the *stringent* condition), so these are the only ImageNet-finetuned model I have for now, but please feel free to let me know if you might be interested in other finetuning settings too.
 
-In the finetuned models, we use a classifier head that consists of a `BatchNorm1d` layer + a `Linear` layer.
+In the finetuned models, we use a classifier head that consists of a `BatchNorm1d` + `Linear` layer.
 
 ## Pretraining
 The models were all pretrained with code from [this repository](https://github.com/eminorhan/mae), which is my personal copy of the excellent [MAE repository](https://github.com/facebookresearch/mae) from Meta AI. In particular, I have used [this SLURM batch script](https://github.com/eminorhan/mae/blob/master/train_mae_sayavakepicutego4d.sh) to train all models (this script contains all training configuration details). Pretraining logs for all models can be found in the [`logs/pretraining_logs`](https://github.com/eminorhan/humanlike-vits/tree/master/logs/pretraining_logs) folder.
