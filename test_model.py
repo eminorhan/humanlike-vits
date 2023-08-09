@@ -43,8 +43,7 @@ def main(args):
         # switch to eval mode
         model.eval()
 
-        for i, (inp, target) in enumerate(val_loader):
-            print(i)
+        for _, (inp, target) in enumerate(val_loader):
             inp = inp.to(device, non_blocking=True)
             target = target.to(device, non_blocking=True)
             
