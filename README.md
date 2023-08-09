@@ -58,7 +58,7 @@ python -u test_model.py \
         --input_size 476 \
         --val_data_path IMAGENET_VAL_DATA_PATH
 ```
-This may take up to ~35 minutes on an A100 for the largest models. You should get a **top-1 accuracy above 44%** and a **top-5 accuracy above 71%** for the two largest and most performant models, *i.e.* `'vith14@448_1.0_1'` and `'vith14@476_1.0_1'`.
+This may take up to ~35 minutes on an A100 for the largest models. You should get a **top-1 accuracy above 44%** and a **top-5 accuracy above 71%** with the two largest and most performant models, *i.e.* `'vith14@448_1.0_1'` and `'vith14@476_1.0_1'`.
 
 ## Pretraining details
 The models were all pretrained with code from [this repository](https://github.com/eminorhan/mae), which is my personal copy of the excellent [MAE repository](https://github.com/facebookresearch/mae) from Meta AI. In particular, I have used [this SLURM batch script](https://github.com/eminorhan/mae/blob/master/train_mae_sayavakepicutego4d.sh) to train all models (this script contains all training configuration details). Pretraining logs for all models can be found in the [`logs/pretraining_logs`](https://github.com/eminorhan/humanlike-vits/tree/master/logs/pretraining_logs) folder.
