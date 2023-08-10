@@ -5,6 +5,7 @@ from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 from utils import load_model
 
+
 def get_args_parser():
     parser = argparse.ArgumentParser('Test a model on ImageNet val data', add_help=False)
     parser.add_argument('--model_id', default='vith14@476_1.0_1', type=str, help='Model identifier')
@@ -16,6 +17,7 @@ def get_args_parser():
 
     return parser
 
+
 def accuracy(output, target, topk=(1,)):
     """computes top-k accuracy for specified values of k"""
     maxk = max(topk)
@@ -24,6 +26,7 @@ def accuracy(output, target, topk=(1,)):
     pred = pred.t()
     correct = pred.eq(target.reshape(1, -1).expand_as(pred))
     return [correct[:k].reshape(-1).float().sum(0) * 100. / batch_size for k in topk]
+
 
 def main(args):
     model = load_model(args.model_id, finetuned=True)
@@ -56,6 +59,7 @@ def main(args):
         outputs = torch.cat(outputs)
         acc1, acc5 = accuracy(outputs, targets, topk=(1, 5))
         print('* Acc@1 {acc1:.3f} Acc@5 {acc5:.3f}'.format(acc1=acc1, acc5=acc5))
+
 
 if __name__ == '__main__':
     args = get_args_parser()

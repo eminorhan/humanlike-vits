@@ -5,10 +5,6 @@ import os
 import torch
 from huggingface_hub import hf_hub_download
 
-def get_available_models():
-    available_models = []
-
-    return available_models
 
 def load_model(model_name, finetuned=False):
 
@@ -40,6 +36,7 @@ def load_model(model_name, finetuned=False):
 
     return model
 
+
 def build_mae(model_name, finetuned=False):
     import vit_models as vits
     if finetuned:
@@ -49,6 +46,7 @@ def build_mae(model_name, finetuned=False):
         model = vits.__dict__[model_name](num_classes=0, global_pool=False)
 
     return model
+
 
 def load_mae(model, pretrained_weights):
     if os.path.isfile(pretrained_weights):    
@@ -63,6 +61,7 @@ def load_mae(model, pretrained_weights):
         print('Pretrained weights found at {} and loaded with msg: {}'.format(pretrained_weights, msg))
     else:
         print("There is no reference weights available for this model => We use random weights.")
+
 
 def interpolate_pos_embed(model, checkpoint_model):
     '''
